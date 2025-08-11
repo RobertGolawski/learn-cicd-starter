@@ -35,7 +35,7 @@ func TestGetAPIKey(t *testing.T) {
 		},
 		"happy path": {
 			input: http.Header{
-				"Authorization": []string{"ApiKey AAAAAAAAAPPPPPII"},
+				"Authorization": []string{"ApiKey AAAAAAAAAPPPPPIII"},
 			},
 			expectedStr: "AAAAAAAAAPPPPPIII",
 			expectedErr: nil,

@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"errors"
 	"net/http"
 	"reflect"
 	"testing"
@@ -25,14 +24,14 @@ func TestGetAPIKey(t *testing.T) {
 				"Authorization": []string{"ApiKey"},
 			},
 			expectedStr: "",
-			expectedErr: errors.New("malformed authorization header"),
+			expectedErr: ErrMalformedAuth,
 		},
 		"malformed header bearer": {
 			input: http.Header{
 				"Authorization": []string{"Bearer S0M3B34R3R"},
 			},
 			expectedStr: "",
-			expectedErr: errors.New("malformed authorization header"),
+			expectedErr: ErrMalformedAuth,
 		},
 		"happy path": {
 			input: http.Header{
@@ -46,7 +45,7 @@ func TestGetAPIKey(t *testing.T) {
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
 			got, err := GetAPIKey(tc.input)
-			if !reflect.DeepEqual(tc.expectedErr, err) {
+			if tc.expectedErr != err {
 				t.Fatalf("expected error: %v, got error: %v", tc.expectedErr, err)
 			}
 			if !reflect.DeepEqual(tc.expectedStr, got) {
